@@ -19,7 +19,7 @@ var cmdCreateCommand = &cobra.Command{
 		command := args[0]
 		image := args[1]
 		config := dkr.Config{Name: command, Image: image, Entrypoint: cmdCreateCommandEntryPoint}
-		home, err := dkr.NewDcmHome()
+		home, err := dkr.NewDkrHome()
 		osexit.ExitOnError(err)
 		err = config.Save(home)
 		osexit.ExitOnError(err)

@@ -9,16 +9,16 @@ type dkrHome struct {
 	Root string
 }
 
-func NewDcmHome() (*dkrHome, error) {
+func NewDkrHome() (*dkrHome, error) {
 	userHome, err := os.UserHomeDir()
 	if err != nil {
 		return nil, err
 	}
 	root := path.Join(userHome, ".dkr")
-	return NewDcmHomeWihRoot(root)
+	return NewDkrHomeWihRoot(root)
 }
 
-func NewDcmHomeWihRoot(root string) (*dkrHome, error) {
+func NewDkrHomeWihRoot(root string) (*dkrHome, error) {
 	if _, err := os.Stat(root); os.IsNotExist(err) {
 		err = os.Mkdir(root, 0700)
 		if err != nil {

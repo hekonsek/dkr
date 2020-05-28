@@ -7,7 +7,7 @@ import (
 )
 
 func TestCreateHome(t *testing.T) {
-	home, err := dkr.NewDcmHome()
+	home, err := dkr.NewDkrHome()
 	assert.NoError(t, err)
 	assert.DirExists(t, home.Root)
 }
