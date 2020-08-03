@@ -11,7 +11,8 @@ func init() {
 }
 
 var cmdCommand = &cobra.Command{
-	Use: "run COMMAND",
+	Use:                "run COMMAND",
+	DisableFlagParsing: true,
 	Run: func(cmd *cobra.Command, args []string) {
 		command := args[0]
 
@@ -20,9 +21,7 @@ var cmdCommand = &cobra.Command{
 
 		config, err := dkr.ParseConfig(home, command)
 		osexit.ExitOnError(err)
-		sandboxImage, sandboxArgs := config.SandboxCommand()
-		err = dkr.Sandbox(sandboxImage, sandboxArgs...)
+		err = dkr.Sandbox(config.Image, config.Entrypoint, args[1:]...)
 		osexit.ExitOnError(err)
 	},
 }
-

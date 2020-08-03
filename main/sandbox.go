@@ -7,13 +7,13 @@ import (
 )
 
 func init() {
-	RootCommand.AddCommand(runCommand)
+	RootCommand.AddCommand(sandboxCommand)
 }
 
-var runCommand = &cobra.Command{
+var sandboxCommand = &cobra.Command{
 	Use: "sandbox IMAGE [args...]",
 	Run: func(cmd *cobra.Command, args []string) {
-		err := dkr.Sandbox(args[0], args[1:]...)
+		err := dkr.Sandbox(args[0], nil, args[1:]...)
 		osexit.ExitOnError(err)
 	},
 }

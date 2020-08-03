@@ -6,10 +6,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var cmdCreateCommandEntryPoint string
+var cmdCreateCommandEntryPoint []string
 
 func init() {
-	cmdCreateCommand.Flags().StringVarP(&cmdCreateCommandEntryPoint, "entrypoint", "", "", "")
+	cmdCreateCommand.Flags().StringArrayVarP(&cmdCreateCommandEntryPoint, "entrypoint", "", nil, "")
 	cmdParentCommand.AddCommand(cmdCreateCommand)
 }
 
@@ -25,4 +25,3 @@ var cmdCreateCommand = &cobra.Command{
 		osexit.ExitOnError(err)
 	},
 }
-

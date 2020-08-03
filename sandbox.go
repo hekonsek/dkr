@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 )
 
-func Sandbox(image string, args... string) error {
+func Sandbox(image string, entrypoint []string, args ...string) error {
 	pwd, err := os.Getwd()
 	if err != nil {
 		return err
@@ -14,14 +15,18 @@ func Sandbox(image string, args... string) error {
 
 	env := []string{}
 	for _, e := range os.Environ() {
-		env = append(env, "-e" + e)
+		env = append(env, "-e"+e)
 	}
 
 	cmdArgs := []string{"run", "--rm", "-it", "-v=/var/run/docker.sock:/var/run/docker.sock",
 		fmt.Sprintf("-v=%s:%s", "/", "/host"),
-		fmt.Sprintf("-w=/host%s", pwd,)}
+		fmt.Sprintf("-w=/host%s", pwd)}
 	cmdArgs = append(cmdArgs, env...)
 	dockerConfig := append(cmdArgs, image)
+	if entrypoint != nil && len(entrypoint) > 0 {
+		entrypointArg := fmt.Sprintf(`["%s"]`, strings.Join(entrypoint, `","`))
+		dockerConfig = append(dockerConfig, "--entrypoint", entrypointArg)
+	}
 	c := exec.Command("docker", append(dockerConfig, args...)...)
 	c.Env = os.Environ()
 	c.Stdin = os.Stdin
