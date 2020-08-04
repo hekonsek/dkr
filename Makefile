@@ -16,3 +16,7 @@ install:
 	docker rm dkr
 	docker create --name dkr hekonsek/dkr
 	sudo docker cp dkr:/bin/dkr /usr/bin/
+
+commands:
+	docker build commands/packer -t hekonsek/dkr-packer
+	docker push hekonsek/dkr-packer
