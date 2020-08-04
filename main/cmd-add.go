@@ -9,7 +9,7 @@ import (
 var cmdCreateCommandEntryPoint []string
 
 func init() {
-	cmdCreateCommand.Flags().StringArrayVarP(&cmdCreateCommandEntryPoint, "entrypoint", "", nil, "")
+	cmdCreateCommand.Flags().StringArrayVarP(&cmdCreateCommandEntryPoint, "entrypoint", "e", nil, "")
 	cmdParentCommand.AddCommand(cmdCreateCommand)
 }
 
