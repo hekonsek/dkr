@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	RootCommand.AddCommand(sandboxCommand)
+	DkrCommand.AddCommand(sandboxCommand)
 }
 
 var sandboxCommand = &cobra.Command{

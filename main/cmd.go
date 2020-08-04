@@ -6,11 +6,11 @@ import (
 )
 
 func init() {
-	RootCommand.AddCommand(cmdParentCommand)
+	DkrCommand.AddCommand(cmdParentCommand)
 }
 
 var cmdParentCommand = &cobra.Command{
-	Use:   "cmd",
+	Use: "cmd",
 
 	Run: func(cmd *cobra.Command, args []string) {
 		osexit.ExitOnError(cmd.Help())
