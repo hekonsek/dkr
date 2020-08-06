@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func Test(t *testing.T) {
+func TestSave(t *testing.T) {
 	// Given
 	home, err := dkr.NewDkrHome()
 	assert.NoError(t, err)
@@ -22,4 +22,18 @@ func Test(t *testing.T) {
 	assert.Equal(t, "foo", config.Name)
 	assert.Equal(t, "bar", config.Image)
 	assert.Equal(t, []string{"baz"}, config.Entrypoint)
+}
+
+func TestSaveWithoutPermissionFail(t *testing.T) {
+	// Given
+	home, err := dkr.NewDkrHomeWihRoot("/")
+	assert.NoError(t, err)
+	config := dkr.NewConfig("foo", "bar", []string{"baz"})
+
+	// When
+	err = config.Save(home)
+
+	// Then
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "denied")
 }

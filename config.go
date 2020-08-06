@@ -32,6 +32,9 @@ func (config *Config) Save(home *dkrHome) error {
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile(path.Join(home.Root, config.Name+".yml"), yml, 0644)
-	return err
+	return SaveConfig(home, config.Name, yml)
+}
+
+func SaveConfig(home *dkrHome, command string, configYml []byte) error {
+	return ioutil.WriteFile(path.Join(home.Root, command+".yml"), configYml, 0644)
 }

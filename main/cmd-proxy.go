@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/fatih/color"
+	"github.com/hekonsek/dkr"
 	"github.com/hekonsek/osexit"
 	"github.com/spf13/cobra"
-	"io/ioutil"
-	"github.com/fatih/color"
 )
 
 func init() {
@@ -21,13 +21,9 @@ var cmdProxyCommand = &cobra.Command{
 		}
 		command := args[0]
 
-		proxyBytes, err := ioutil.ReadFile("/usr/bin/dkr-proxy")
+		target, err := dkr.CopyProxy(command)
 		osexit.ExitOnError(err)
-		target := "/usr/bin/" + command
-		err = ioutil.WriteFile(target, proxyBytes, 0555)
-		osexit.ExitOnError(err)
-
 		fmt.Printf("Proxy file for command %s created: %s\n",
-			color.GreenString(command) , color.GreenString(target))
+			color.GreenString(command), color.GreenString(target))
 	},
 }
