@@ -26,9 +26,9 @@ commands:
 	docker push hekonsek/dkr-docker-last-id
 
 images:
-	docker build --target docker images/docker -t hekonsek/dkr-docker
+	docker build --target docker images -t hekonsek/dkr-docker
 	docker push hekonsek/dkr-docker
-	docker build --target go images/docker -t hekonsek/dkr-go
+	docker build --target go images -t hekonsek/dkr-go
 	docker push hekonsek/dkr-go
-	docker build --target docker-go images/docker -t hekonsek/dkr-docker-go
+	docker build --target docker-go images -t hekonsek/dkr-docker-go
 	docker push hekonsek/dkr-docker-go
