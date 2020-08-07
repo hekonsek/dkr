@@ -22,3 +22,13 @@ install:
 commands:
 	docker build commands/packer -t hekonsek/dkr-packer
 	docker push hekonsek/dkr-packer
+	docker build commands/docker-last-id -t hekonsek/dkr-docker-last-id
+	docker push hekonsek/dkr-docker-last-id
+
+images:
+	docker build --target docker images/docker -t hekonsek/dkr-docker
+	docker push hekonsek/dkr-docker
+	docker build --target go images/docker -t hekonsek/dkr-go
+	docker push hekonsek/dkr-go
+	docker build --target docker-go images/docker -t hekonsek/dkr-docker-go
+	docker push hekonsek/dkr-docker-go
