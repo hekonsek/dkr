@@ -2,6 +2,21 @@
 
 DKR (pronounced *dockerizer*) is a simple toolkit to help you dockerize your shell commands.
 
+# Usage
+
+In order to install command from DKR catalog use the following command:
+
+```
+sudo dkr cmd install packer
+```
+
+For example the command above installs HashiCorp Packer:
+
+```
+$ packer version
+Packer v1.6.1
+```
+
 ## Installation
 
 The easiest way to install DKR is via DockerHub distributed image:
@@ -9,6 +24,7 @@ The easiest way to install DKR is via DockerHub distributed image:
 ```
 docker create --name dkr hekonsek/dkr
 sudo docker cp dkr:/bin/dkr /usr/bin/
+sudo docker cp dkr:/bin/dkr-proxy /usr/bin/
 ```
 
  ## License

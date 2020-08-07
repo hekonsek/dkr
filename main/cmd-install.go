@@ -11,11 +11,11 @@ import (
 )
 
 func init() {
-	cmdParentCommand.AddCommand(cmdAddCommand)
+	cmdParentCommand.AddCommand(cmdInstallCommand)
 }
 
-var cmdAddCommand = &cobra.Command{
-	Use: "add COMMAND",
+var cmdInstallCommand = &cobra.Command{
+	Use: "install COMMAND",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 1 {
 			osexit.ExitOnError(cmd.Help())
