@@ -13,7 +13,7 @@ docker-build: build
 docker-push: docker-build
 	docker push hekonsek/dkr
 
-install:
+install: docker-build
 	docker rm dkr
 	docker create --name dkr hekonsek/dkr
 	sudo docker cp dkr:/bin/dkr /usr/bin/
