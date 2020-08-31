@@ -14,7 +14,7 @@ docker-push: docker-build
 	docker push hekonsek/dkr
 
 install: docker-build
-	docker rm dkr
+	@[ "$(docker ps -qa -f name=dkr)" ] && docker rm dkr
 	docker create --name dkr hekonsek/dkr
 	sudo docker cp dkr:/bin/dkr /usr/bin/
 	sudo docker cp dkr:/bin/dkr-proxy /usr/bin/
@@ -24,6 +24,8 @@ commands:
 	docker push hekonsek/dkr-packer
 	docker build commands/docker-last-id -t hekonsek/dkr-docker-last-id
 	docker push hekonsek/dkr-docker-last-id
+	docker build commands/terraform -t hekonsek/dkr-terraform
+	docker push hekonsek/dkr-terraform
 
 images:
 	docker build --target docker images -t hekonsek/dkr-docker
