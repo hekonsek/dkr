@@ -16,7 +16,8 @@ In order to install command from DKR catalog use the following command:
 sudo dkr cmd install packer
 ```
 
-For example the command above installs HashiCorp Packer:
+For example the command above installs HashiCorp Packer. You can check if installation was successful
+by executing Packer command:
 
 ```
 $ packer version
