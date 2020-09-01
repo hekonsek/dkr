@@ -13,7 +13,7 @@ DKR handles all the heavy lifting necessary to run commands in a container envir
 In order to install command from DKR catalog use the following command:
 
 ```
-sudo dkr cmd install packer
+$ sudo dkr cmd install packer
 ```
 
 For example the command above installs HashiCorp Packer. You can check if installation was successful
