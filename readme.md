@@ -2,6 +2,13 @@
 
 DKR (pronounced *dockerizer*) is a simple toolkit to help you dockerize your shell commands.
 
+Under the hood DKR handles all the heavy lifting necessary to run commands in a container environment:
+- passing environment variables
+- bridging host's network
+- mounting host file system
+- mounting current working directory 
+- creating symlink/alias like proxy to commands 
+
 # Usage
 
 In order to install command from DKR catalog use the following command:
