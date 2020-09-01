@@ -1,8 +1,7 @@
 # DKR - dockerize your shell commands
 
-DKR (pronounced *dockerizer*) is a simple toolkit to help you dockerize your shell commands.
-
-Under the hood DKR handles all the heavy lifting necessary to run commands in a container environment:
+DKR (pronounced *dockerizer*) is a simple toolkit to help you dockerize your shell commands. Under the hood 
+DKR handles all the heavy lifting necessary to run commands in a container environment:
 - passing environment variables
 - bridging host's network
 - mounting host file system
