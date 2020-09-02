@@ -24,8 +24,6 @@ commands:
 	docker push hekonsek/dkr-packer
 	docker build commands/docker-last-id -t hekonsek/dkr-docker-last-id
 	docker push hekonsek/dkr-docker-last-id
-	docker build commands/terraform -t hekonsek/dkr-terraform
-	docker push hekonsek/dkr-terraform
 
 images:
 	docker build --target docker images -t hekonsek/dkr-docker
