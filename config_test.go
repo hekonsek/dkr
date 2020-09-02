@@ -37,3 +37,12 @@ func TestSaveWithoutPermissionFail(t *testing.T) {
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "denied")
 }
+
+func TestImportConfigYml(t *testing.T) {
+	// When
+	configYml, err := dkr.ImportConfigYml("terraform")
+	assert.NoError(t, err)
+
+	// Then
+	assert.Equal(t, "image: hekonsek/dkr-terraform", string(configYml))
+}
