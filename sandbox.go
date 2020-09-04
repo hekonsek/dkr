@@ -15,6 +15,10 @@ func Sandbox(image string, entrypoint []string, args ...string) error {
 
 	env := []string{}
 	for _, e := range os.Environ() {
+		if strings.HasPrefix(e, "HOME=") {
+			homeSegments := strings.SplitN(e, "=", 2)
+			e = fmt.Sprintf("HOME=/host%s", homeSegments[1])
+		}
 		env = append(env, "-e"+e)
 	}
 
