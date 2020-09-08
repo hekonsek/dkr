@@ -5,8 +5,9 @@ DKR handles all the heavy lifting necessary to run commands in a container envir
 - passing environment variables
 - bridging host's network
 - mounting host file system
-- mounting current working directory 
-- creating symlink/alias like proxy to commands 
+- mounting current working directory
+- mounting host user home and setting up $HOME variable 
+- creating Bash aliases to commands 
 
 # Usage
 
@@ -31,7 +32,6 @@ The easiest way to install DKR is via DockerHub distributed image:
 ```
 docker create --name dkr hekonsek/dkr
 sudo docker cp dkr:/bin/dkr /usr/bin/
-sudo docker cp dkr:/bin/dkr-proxy /usr/bin/
 ```
 
  ## License

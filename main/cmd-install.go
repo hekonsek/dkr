@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/fatih/color"
 	"github.com/hekonsek/dkr"
+	newdkr "github.com/hekonsek/dkr/dkr"
 	"github.com/hekonsek/osexit"
 	"github.com/spf13/cobra"
 )
@@ -28,11 +29,13 @@ var cmdInstallCommand = &cobra.Command{
 		osexit.ExitOnError(err)
 		err = dkr.SaveConfig(home, command, configYml)
 		osexit.ExitOnError(err)
-		fmt.Printf("Command %s added.\n", color.GreenString(command))
+		fmt.Printf("Command %s installed.\n", color.GreenString(command))
 
-		target, err := dkr.CopyProxy(command)
+		bashrc, err := newdkr.NewBashrc()
 		osexit.ExitOnError(err)
-		fmt.Printf("Proxy file for command %s created: %s\n",
-			color.GreenString(command), color.GreenString(target))
+		err = bashrc.AddAlias(command)
+		osexit.ExitOnError(err)
+		fmt.Printf("Bash alias for command %s was added to %s file. Please run the following command to reload your shell: %s\n",
+			color.GreenString(command), color.GreenString("~/.bashrc"), color.GreenString(". ~/.bashrc"))
 	},
 }
