@@ -14,15 +14,18 @@ DKR handles all the heavy lifting necessary to run commands in a container envir
 In order to install command from DKR catalog use the following command:
 
 ```
-$ sudo dkr cmd install packer
+$ dkr cmd install terraform
+Command terraform installed.
+Bash alias for command terraform was added to ~/.bashrc file. 
+Please run the following command to reload your shell: . ~/.bashrc
 ```
 
-For example the command above installs HashiCorp Packer. You can check if installation was successful
+For example the command above installs HashiCorp Terraform. You can check if installation was successful
 by executing the installed command:
 
 ```
-$ packer version
-Packer v1.6.1
+$ terraform version
+Terraform v0.13.2
 ```
 
 ## Installation
