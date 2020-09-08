@@ -9,7 +9,7 @@ DKR handles all the heavy lifting necessary to run commands in a container envir
 - mounting host user home and setting up $HOME variable 
 - creating Bash aliases to commands 
 
-# Usage
+## Usage
 
 In order to install command from DKR catalog use the following command:
 
@@ -37,6 +37,6 @@ docker create --name dkr hekonsek/dkr
 sudo docker cp dkr:/bin/dkr /usr/bin/
 ```
 
- ## License
+## License
  
- This project is distributed under [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0.html).
+This project is distributed under [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0.html).
