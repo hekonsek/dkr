@@ -24,6 +24,19 @@ func TestSave(t *testing.T) {
 	assert.Equal(t, []string{"baz"}, config.Entrypoint)
 }
 
+func TestParseNotExistingCommand(t *testing.T) {
+	// Given
+	home, err := dkr.NewDkrHome()
+	assert.NoError(t, err)
+
+	// When
+	config, err := dkr.ParseConfig(home, "noSuchCommand")
+
+	// Then
+	assert.NoError(t, err)
+	assert.Nil(t, config)
+}
+
 func TestSaveWithoutPermissionFail(t *testing.T) {
 	// Given
 	home, err := dkr.NewDkrHomeWihRoot("/")

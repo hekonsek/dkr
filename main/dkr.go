@@ -7,7 +7,7 @@ import (
 
 var DkrCommand = &cobra.Command{
 	Use:   "dkr",
-	Short: `DKR (pronounced "dockerizer"") is a simple toolkit to help you dockerize your shell commands.`,
+	Short: `DKR (pronounced "dockerizer") is a simple toolkit to help you dockerize your shell commands.`,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		osexit.ExitOnError(cmd.Help())

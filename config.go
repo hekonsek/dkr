@@ -21,6 +21,9 @@ func NewConfig(name string, image string, entrypoint []string) *Config {
 
 func ParseConfig(home *dkrHome, command string) (*Config, error) {
 	configBytes, err := ioutil.ReadFile(path.Join(home.Root, command+".yml"))
+	if err != nil {
+		return nil, nil
+	}
 	config := Config{}
 	err = yaml.Unmarshal(configBytes, &config)
 	if err != nil {

@@ -11,7 +11,7 @@ func init() {
 
 var cmdParentCommand = &cobra.Command{
 	Use:   "cmd",
-	Short: "Manages commands installed on this machine.",
+	Short: "Manages commands installed on this machine",
 
 	Run: func(cmd *cobra.Command, args []string) {
 		osexit.ExitOnError(cmd.Help())
