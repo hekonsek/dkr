@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+const ttyEnv = "DKR_TTY"
+
 func Sandbox(image string, entrypoint []string, args ...string) error {
 	pwd, err := os.Getwd()
 	if err != nil {
@@ -22,9 +24,12 @@ func Sandbox(image string, entrypoint []string, args ...string) error {
 		env = append(env, "-e"+e)
 	}
 
-	cmdArgs := []string{"run", "--rm", "-it", "-v=/var/run/docker.sock:/var/run/docker.sock",
+	cmdArgs := []string{"run", "--rm", "-v=/var/run/docker.sock:/var/run/docker.sock",
 		fmt.Sprintf("-v=%s:%s", "/", "/host"),
 		fmt.Sprintf("-w=/host%s", pwd)}
+	if tty() {
+		cmdArgs = append(cmdArgs, "-it")
+	}
 	cmdArgs = append(cmdArgs, env...)
 	dockerConfig := append(cmdArgs, image)
 	if entrypoint != nil && len(entrypoint) > 0 {
@@ -38,4 +43,9 @@ func Sandbox(image string, entrypoint []string, args ...string) error {
 	c.Stderr = os.Stderr
 	err = c.Run()
 	return err
+}
+
+func tty() bool {
+	ttyEnv := os.Getenv(ttyEnv)
+	return ttyEnv == "" || ttyEnv == "1"
 }
