@@ -57,7 +57,8 @@ func Sandbox(image string, entrypoint []string, args []string, options *SandboxO
 }
 
 func isTty() (bool, error) {
-	cmd := exec.Command("docker", "run", "-it", "echo", "foo")
+	cmd := exec.Command("docker", "run", "-it", "alpine", "echo")
+	cmd.Stdin = os.Stdin
 	out, err := cmd.CombinedOutput()
 	if strings.Contains(string(out), "not a TTY") {
 		return false, nil
