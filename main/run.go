@@ -29,7 +29,7 @@ var cmdCommand = &cobra.Command{
 				"Command %s not installed. Have you tried installing that command by executing %s ?",
 				color.GreenString(command), color.GreenString("dkr cmd install "+command)))
 		}
-		err = dkr.Sandbox(config.Image, config.Entrypoint, args[1:]...)
+		err = dkr.Sandbox(config.Image, config.Entrypoint, args[1:], nil)
 		osexit.ExitOnError(err)
 	},
 }
