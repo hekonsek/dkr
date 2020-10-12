@@ -9,7 +9,7 @@ build:
 docker-build: build
 	docker build out -t hekonsek/dkr:`grep 'version =' main/version.go | cut -d '"' -f 2`
 
-docker-push:
+docker-push: docker-build
 	docker push hekonsek/dkr:`grep 'version =' main/version.go | cut -d '"' -f 2`
 
 release: docker-push git-version
