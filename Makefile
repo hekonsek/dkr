@@ -11,10 +11,17 @@ docker-build: build
 
 docker-push: docker-build
 	docker push hekonsek/dkr:`grep 'version =' main/version.go | cut -d '"' -f 2`
+	docker tag hekonsek/dkr:`grep 'version =' main/version.go | cut -d '"' -f 2`  hekonsek/dkr:latest
+	docker push hekonsek/dkr:latest
 
 release: docker-push git-version
 
 install: docker-build
+	docker rm dkr
+	docker create --name dkr hekonsek/dkr:`grep 'version =' main/version.go | cut -d '"' -f 2`
+	sudo docker cp dkr:/bin/dkr /usr/bin/
+
+install-latest:
 	docker rm dkr
 	docker create --name dkr hekonsek/dkr
 	sudo docker cp dkr:/bin/dkr /usr/bin/
