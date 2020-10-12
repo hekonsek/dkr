@@ -11,7 +11,8 @@ func init() {
 }
 
 var sandboxCommand = &cobra.Command{
-	Use: "sandbox IMAGE [args...]",
+	Use:   "sandbox IMAGE [args...]",
+	Short: "Executes given command in a dockerized sandbox",
 	Run: func(cmd *cobra.Command, args []string) {
 		err := dkr.Sandbox(args[0], nil, args[1:], nil)
 		osexit.ExitOnError(err)

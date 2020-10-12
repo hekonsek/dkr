@@ -14,7 +14,7 @@ func init() {
 
 var cmdCommand = &cobra.Command{
 	Use:                "run COMMAND",
-	Short:              "Executes given command in a dockerized sandbox",
+	Short:              "Executes installed command",
 	DisableFlagParsing: true,
 	Run: func(cmd *cobra.Command, args []string) {
 		command := args[0]
