@@ -6,17 +6,20 @@ test:
 build:
 	go build -o out/dkr main/*.go
 
-docker-build: build
-	docker build out -t hekonsek/dkr:`grep 'version =' main/version.go | cut -d '"' -f 2`
+bump:
+	versioon bump
 
-docker-push: docker-build
-	docker push hekonsek/dkr:`grep 'version =' main/version.go | cut -d '"' -f 2`
-	docker tag hekonsek/dkr:`grep 'version =' main/version.go | cut -d '"' -f 2`  hekonsek/dkr:latest
+docker: build
+	docker build out -t hekonsek/dkr:`versioon current`
+
+docker-release: docker
+	docker push hekonsek/dkr:`versioon current`
+	docker tag hekonsek/dkr:`versioon current` hekonsek/dkr:latest
 	docker push hekonsek/dkr:latest
 
-release: docker-push git-version
+release: bump docker-release git-version
 
-install: docker-build
+install: docker
 	docker rm dkr
 	docker create --name dkr hekonsek/dkr:`grep 'version =' main/version.go | cut -d '"' -f 2`
 	sudo docker cp dkr:/bin/dkr /usr/bin/
@@ -27,7 +30,7 @@ install-latest:
 	sudo docker cp dkr:/bin/dkr /usr/bin/
 
 git-version:
-	@git tag v`grep 'version =' main/version.go | cut -d '"' -f 2`
+	@git tag v`versioon current`
 	git push --tags
 
 commands:
