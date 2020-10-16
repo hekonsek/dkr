@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/fatih/color"
-	"github.com/hekonsek/dkr"
 	newdkr "github.com/hekonsek/dkr/dkr"
 	"github.com/hekonsek/osexit"
 	"github.com/spf13/cobra"
@@ -22,20 +21,25 @@ var cmdInstallCommand = &cobra.Command{
 		}
 		command := args[0]
 
-		configYml, err := dkr.ImportConfigYml(command)
-		osexit.ExitOnError(err)
-
-		home, err := dkr.NewDkrHome()
-		osexit.ExitOnError(err)
-		err = dkr.SaveConfig(home, command, configYml)
-		osexit.ExitOnError(err)
-		fmt.Printf("Command %s installed.\n", color.GreenString(command))
-
 		bashrc, err := newdkr.NewBashrc()
 		osexit.ExitOnError(err)
-		err = bashrc.AddAlias(command)
+		home, err := newdkr.NewDkrHome()
 		osexit.ExitOnError(err)
-		fmt.Printf("Bash alias for command %s was added to %s file. Please run the following command to reload your shell: %s\n",
-			color.GreenString(command), color.GreenString("~/.bashrc"), color.GreenString(". ~/.bashrc"))
+
+		if !bashrc.HasPath() {
+			err = bashrc.AddPath(home.Bin())
+			osexit.ExitOnError(err)
+			fmt.Printf("Commands directory %s was added to PATH in bashrc file. Please run the following command to reload your shell: %s\n",
+				color.GreenString(home.Bin()), color.GreenString(". ~/.bashrc"))
+		}
+
+		configYml, err := newdkr.ImportConfigYml(command)
+		osexit.ExitOnError(err)
+
+		err = newdkr.SaveConfig(home, command, configYml)
+		osexit.ExitOnError(err)
+		err = bashrc.AddCommandProxy(home.Bin(), command)
+		osexit.ExitOnError(err)
+		fmt.Printf("Command %s installed.\n", color.GreenString(command))
 	},
 }

@@ -20,7 +20,7 @@ func NewConfig(name string, image string, entrypoint []string) *Config {
 }
 
 func ParseConfig(home *dkrHome, command string) (*Config, error) {
-	configBytes, err := ioutil.ReadFile(path.Join(home.Root, command+".yml"))
+	configBytes, err := ioutil.ReadFile(path.Join(home.Root(), command+".yml"))
 	if err != nil {
 		return nil, nil
 	}
@@ -42,7 +42,7 @@ func (config *Config) Save(home *dkrHome) error {
 }
 
 func SaveConfig(home *dkrHome, command string, configYml []byte) error {
-	return ioutil.WriteFile(path.Join(home.Root, command+".yml"), configYml, 0644)
+	return ioutil.WriteFile(path.Join(home.Root(), command+".yml"), configYml, 0644)
 }
 
 func ImportConfigYml(command string) ([]byte, error) {

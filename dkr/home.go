@@ -6,7 +6,15 @@ import (
 )
 
 type dkrHome struct {
-	Root string
+	root string
+}
+
+func (home *dkrHome) Root() string {
+	return home.root
+}
+
+func (home *dkrHome) Bin() string {
+	return path.Join(home.Root(), "bin")
 }
 
 func NewDkrHome() (*dkrHome, error) {
@@ -26,5 +34,14 @@ func NewDkrHomeWihRoot(root string) (*dkrHome, error) {
 		}
 	}
 
-	return &dkrHome{Root: root}, nil
+	dkr := &dkrHome{root: root}
+
+	if _, err := os.Stat(dkr.Bin()); os.IsNotExist(err) {
+		err = os.Mkdir(dkr.Bin(), 0700)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return dkr, nil
 }
