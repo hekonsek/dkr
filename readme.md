@@ -9,6 +9,7 @@ DKR handles all the heavy lifting necessary to run commands in a container envir
 - mounting host user home and setting up $HOME variable 
 - creating Bash "proxy" scripts for installed commands 
 - ensuring that installed commands are included in $PATH
+- telling Docker to use current user instead of root
 
 ## Usage
 

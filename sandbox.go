@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"os/user"
 	"strings"
 )
 
@@ -27,7 +28,11 @@ func Sandbox(image string, entrypoint []string, args []string, options *SandboxO
 		env = append(env, "-e"+e)
 	}
 
-	cmdArgs := []string{"run", "--rm", "-v=/var/run/docker.sock:/var/run/docker.sock",
+	user, err := user.Current()
+	if err != nil {
+		return err
+	}
+	cmdArgs := []string{"run", "--rm", "--user", user.Gid + ":" + user.Uid, "-v=/var/run/docker.sock:/var/run/docker.sock",
 		fmt.Sprintf("-v=%s:%s", "/", "/host"),
 		fmt.Sprintf("-w=/host%s", pwd)}
 	isTty, err := isTty()
