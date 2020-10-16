@@ -5,7 +5,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const version = "0.9.0"
+const version = "0.10.0"
 
 func init() {
 	DkrCommand.AddCommand(versionCommand)
