@@ -1,12 +1,13 @@
 package dkr
 
 import (
+	"errors"
 	"fmt"
-	"github.com/hekonsek/osexit"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"net/http"
 	"path"
+	"strings"
 )
 
 type Config struct {
@@ -45,26 +46,63 @@ func SaveConfig(home *dkrHome, command string, configYml []byte) error {
 	return ioutil.WriteFile(path.Join(home.Root(), command+".yml"), configYml, 0644)
 }
 
+var NoSuchCommandError = errors.New("no such command")
+
 func ImportConfigYml(command string) ([]byte, error) {
-	url := fmt.Sprintf("https://raw.githubusercontent.com/hekonsek/dkr-%s/master/config.yml",
-		command)
-	resp, err := http.Get(url)
-	osexit.ExitOnError(err)
-	if resp.StatusCode == 404 { // Deprecated: backward compatibility for commands in main dkr project repository
-		url = fmt.Sprintf("https://raw.githubusercontent.com/hekonsek/dkr/master/commands/%s/config.yml",
-			command)
-		resp, err = http.Get(url)
+	for _, configUrl := range generatePossibleConfigUrls(command) {
+		resp, err := http.Get(configUrl)
 		if err != nil {
 			return nil, err
 		}
+		if resp.StatusCode != 200 {
+			continue
+		}
+		defer resp.Body.Close()
+		config, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return nil, err
+		}
+		return config, nil
 	}
-	if resp.StatusCode != 200 {
-		osexit.ExitBecauseError("No such command.")
+	return nil, NoSuchCommandError
+}
+
+func generatePossibleConfigUrls(command string) []string {
+	user := ""
+	repo := ""
+	canonical := ParseCanonicalCommand(command)
+	if canonical != nil {
+		user = canonical.User
+		repo = canonical.Repo
+	} else {
+		user = "hekonsek"
+		repo = "dkr-" + command
 	}
-	defer resp.Body.Close()
-	config, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
+
+	urlTemplate := "https://raw.githubusercontent.com/%s/%s/%s/%s.yml"
+	urls := []string{}
+	for _, branch := range []string{"main", "master"} {
+		for _, config := range []string{"config", "dkr"} {
+			urls = append(urls, fmt.Sprintf(urlTemplate, user, repo, branch, config))
+		}
 	}
-	return config, nil
+	return urls
+}
+
+type CanonicalCommand struct {
+	Repo string
+	User string
+}
+
+func ParseCanonicalCommand(command string) *CanonicalCommand {
+	if !IsCanonical(command) {
+		return nil
+	}
+	commandWithoutGithubPrefix := strings.Replace(command, "github.com/", "", 1)
+	commandParts := strings.Split(commandWithoutGithubPrefix, "/")
+	return &CanonicalCommand{User: commandParts[0], Repo: commandParts[1]}
+}
+
+func IsCanonical(command string) bool {
+	return strings.HasPrefix(command, "github.com/")
 }

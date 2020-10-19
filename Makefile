@@ -33,10 +33,6 @@ install-latest:
 	docker create --name dkr hekonsek/dkr
 	sudo docker cp dkr:/bin/dkr /usr/bin/
 
-commands:
-	docker build commands/docker-last-id -t hekonsek/dkr-docker-last-id
-	docker push hekonsek/dkr-docker-last-id
-
 images:
 	docker build --target docker images -t hekonsek/dkr-docker
 	docker push hekonsek/dkr-docker

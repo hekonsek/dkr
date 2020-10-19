@@ -1,23 +1,23 @@
 package dkr_test
 
 import (
-	dkr2 "github.com/hekonsek/dkr/dkr"
+	"github.com/hekonsek/dkr/dkr"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestSave(t *testing.T) {
 	// Given
-	home, err := dkr2.NewDkrHome()
+	home, err := dkr.NewDkrHome()
 	assert.NoError(t, err)
-	config := dkr2.NewConfig("foo", "bar", []string{"baz"})
+	config := dkr.NewConfig("foo", "bar", []string{"baz"})
 
 	// When
 	err = config.Save(home)
 	assert.NoError(t, err)
 
 	// Then
-	config, err = dkr2.ParseConfig(home, "foo")
+	config, err = dkr.ParseConfig(home, "foo")
 	assert.NoError(t, err)
 	assert.Equal(t, "foo", config.Name)
 	assert.Equal(t, "bar", config.Image)
@@ -26,11 +26,11 @@ func TestSave(t *testing.T) {
 
 func TestParseNotExistingCommand(t *testing.T) {
 	// Given
-	home, err := dkr2.NewDkrHome()
+	home, err := dkr.NewDkrHome()
 	assert.NoError(t, err)
 
 	// When
-	config, err := dkr2.ParseConfig(home, "noSuchCommand")
+	config, err := dkr.ParseConfig(home, "noSuchCommand")
 
 	// Then
 	assert.NoError(t, err)
@@ -39,9 +39,9 @@ func TestParseNotExistingCommand(t *testing.T) {
 
 func TestSaveWithoutPermissionFail(t *testing.T) {
 	// Given
-	home, err := dkr2.NewDkrHomeWihRoot("/")
+	home, err := dkr.NewDkrHomeWihRoot("/")
 	assert.NoError(t, err)
-	config := dkr2.NewConfig("foo", "bar", []string{"baz"})
+	config := dkr.NewConfig("foo", "bar", []string{"baz"})
 
 	// When
 	err = config.Save(home)
@@ -53,9 +53,17 @@ func TestSaveWithoutPermissionFail(t *testing.T) {
 
 func TestImportConfigYml(t *testing.T) {
 	// When
-	configYml, err := dkr2.ImportConfigYml("terraform")
+	configYml, err := dkr.ImportConfigYml("terraform")
 	assert.NoError(t, err)
 
 	// Then
 	assert.Equal(t, "image: hekonsek/dkr-terraform", string(configYml))
+}
+
+func TestImportConfigYmlNoSuchCommand(t *testing.T) {
+	// When
+	_, err := dkr.ImportConfigYml("noSuchCommand")
+
+	// Then
+	assert.Equal(t, err, dkr.NoSuchCommandError)
 }

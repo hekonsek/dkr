@@ -34,12 +34,20 @@ var cmdInstallCommand = &cobra.Command{
 		}
 
 		configYml, err := newdkr.ImportConfigYml(command)
+		if err == newdkr.NoSuchCommandError {
+			osexit.ExitBecauseError(fmt.Sprintf("No such command."))
+		}
 		osexit.ExitOnError(err)
 
-		err = newdkr.SaveConfig(home, command, configYml)
+		shortCommand := command
+		canonical := newdkr.ParseCanonicalCommand(command)
+		if canonical != nil {
+			shortCommand = canonical.Repo
+		}
+		err = newdkr.SaveConfig(home, shortCommand, configYml)
 		osexit.ExitOnError(err)
-		err = bashrc.AddCommandProxy(home.Bin(), command)
+		err = bashrc.AddCommandProxy(home.Bin(), shortCommand)
 		osexit.ExitOnError(err)
-		fmt.Printf("Command %s installed.\n", color.GreenString(command))
+		fmt.Printf("Command %s installed.\n", color.GreenString(shortCommand))
 	},
 }
