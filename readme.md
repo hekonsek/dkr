@@ -18,8 +18,6 @@ In order to install command from DKR catalog use the following command:
 ```
 $ dkr cmd install terraform
 Command terraform installed.
-Bash alias for command terraform was added to ~/.bashrc file. 
-Please run the following command to reload your shell: . ~/.bashrc
 ```
 
 For example the command above installs HashiCorp Terraform. You can check if installation was successful
